@@ -1,0 +1,101 @@
+﻿@model ML.Alumno
+@{
+    ViewData["Title"] = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="text-center">Alumnos</h1>
+
+<div class="container">
+
+    <br />
+    <br />
+
+    @using(Html.BeginForm("GetAll", "Alumno", FormMethod.Post, new {enctype = "multipart/form-data" }))
+    {
+        <div class="row">
+            <div class="col-md-4">
+                <label style="color:blue"><b>Ingrese el nombre del Alumno</b></label>
+                    <input class="form-control me-2" name="nombre" type="search" placeholder="Nombre" aria-label="">
+        </div>
+        </div>
+
+        <div class="row">
+        <div class="col-md-4">
+            <label style="color:blue"><b>Beca Cultural</b></label>
+            @Html.DropDownListFor(model => model.BecaCultural.IdBecaCultural, new SelectList(Model.BecaCultural.BecasCulturales, "IdBecaCultural", "NombreCultural"), "Selecciona la beca", new {@class = "form-control"})
+        </div>
+
+
+            <div class="col-md-4">
+                <label style="color:blue"><b>Beca Deportiva</b></label>
+                @Html.DropDownListFor(model => model.BecaDeportiva.IdBecaDeportiva, new SelectList(Model.BecaDeportiva.BecasDeportivas, "IdBecaDeportiva", "NombreDeportiva"), "Selecciona la beca", new {@class = "form-control"})
+            </div>
+
+
+            <div class="col-md-4">
+                <label style="color:blue"><b>Beca Educativa</b></label>
+                @Html.DropDownListFor(model => model.BecaEducativa.IdBecaEducativa, new SelectList(Model.BecaEducativa.BecasEducativas, "IdBecaEducativa", "NombreEducativa"), "Selecciona la beca", new {@class = "form-control"})
+            </div>
+
+        </div>
+        <br />
+        <button class="btn btn-danger" type="submit">Buscar</button>
+
+    }
+
+<br />
+<br />
+
+    <a class="btn btn-success" href="@Url.Action("Form", "Alumno")"><i class="bi bi-file-plus-fill"></i>Agregar</a>
+
+    <div class="table-responsive">
+
+    <table class="table table-danger table-striped">
+
+        <thead>
+            <tr>
+                <th>ID Alumno</th>
+                <th>Nombre</th>
+                <th>Genero</th>
+                <th>Edad</th>
+                <th>ID Beca Cultural</th>
+                <th>Actividad Cultural</th>
+                <th>ID Beca Deportiva</th>
+                <th>Actividad Deportiva</th>
+                <th>ID Beca Educativa</th>
+                <th>Beca Educativa</th>
+                <th>Actualizar</th>
+                <th>Eliminar</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach(ML.Alumno alumno in Model.Alumnos)
+            {
+                <tr>
+                    <td>@alumno.IdAlumno</td>
+                    <td>@alumno.Nombre</td>
+                    <td>@alumno.Genero</td>
+                    <td>@alumno.Edad</td>
+                    <td>@alumno.BecaCultural.IdBecaCultural</td>
+                    <td>@alumno.BecaCultural.NombreCultural</td>
+                    <td>@alumno.BecaDeportiva.IdBecaDeportiva</td>
+                    <td>@alumno.BecaDeportiva.NombreDeportiva</td>
+                    <td>@alumno.BecaEducativa.IdBecaEducativa</td>
+                    <td>@alumno.BecaEducativa.NombreEducativa</td>
+        
+                    <td><a class="btn btn-info" href="@Url.Action("Form", "Alumno", new {IdAlumno = alumno.IdAlumno})"><i class="bi bi-arrow-up-square-fill"></i></a></td>
+                    <td><a class="btn btn-danger" href="@Url.Action("Delete", "Alumno", new {IdAlumno = alumno.IdAlumno})"><i class="bi bi-file-earmark-excel-fill"></i></a></td>
+                </tr>
+            }
+
+        </tbody>
+
+
+    </table>
+
+    </div>
+
+</div>
+

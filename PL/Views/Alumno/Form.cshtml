@@ -1,0 +1,130 @@
+﻿@model ML.Alumno
+@{
+    ViewData["Title"] = "Form";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="text-center">Formulario</h1>
+<br />
+
+@using(Html.BeginForm("Form", "Alumno", FormMethod.Post, new {enctype = "multipart-form/data", @id = "formulario"}))
+{
+    @Html.HiddenFor(model => model.IdAlumno)
+
+    <div class="row">
+        <div class="col-md-4">
+            @Html.LabelFor(model => model.Nombre)
+            @Html.TextBoxFor(model => model.Nombre, new {@class = "form-control", @id = "nombre"})
+        </div>
+
+        <div class="col-md-4">
+            @Html.LabelFor(model => model.Genero)
+                @Html.TextBoxFor(model => model.Genero, new {@class = "form-control", @placeholder = "Mujer / Hombre", @id = "genero"})
+
+        </div>
+
+        <div class="col-md-4">
+            @Html.LabelFor(model => model.Edad)
+            @Html.TextBoxFor(model => model.Edad, new {@class =  "form-control", @placeholder = "15 - 18", @id = "edad"})
+
+        </div>
+
+    </div>
+
+    <br />
+
+    <div class="row">
+        <div class="col-md-4">
+            @Html.LabelFor(model => model.IdBecaCultural)
+                @Html.DropDownListFor(model => model.IdBecaCultural, new SelectList(Model.BecaCultural.BecasCulturales, "IdBecaCultural", "NombreCultural"), "Selecciona la beca", new {@class = "form-control", @id = "BecaCultural"})
+
+        </div>
+
+        <div class="col-md-4">
+            @Html.LabelFor(model => model.IdBecaDeportiva)
+                @Html.DropDownListFor(model => model.IdBecaDeportiva, new SelectList(Model.BecaDeportiva.BecasDeportivas, "IdBecaDeportiva" , "NombreDeportiva"), "Selecciona la beca", new {@class = "form-control",  @id = "BecaDeportiva"})
+
+        </div>
+
+        <div class="col-md-4">
+            @Html.LabelFor(model => model.IdBecaEducativa)
+            @Html.DropDownListFor(model => model.IdBecaEducativa, new SelectList(Model.BecaEducativa.BecasEducativas, "IdBecaEducativa", "NombreEducativa"), "Selecciona la beca", new {@class = "form-control", @id = "BecaEducativa"})
+
+        </div>
+
+
+    </div>
+
+    
+    <br />
+    <hr />
+    <br />
+
+    <button class="btn btn-success" type="submit">Guardar</button>
+    <a class="btn btn-danger" href="@Url.Action("GetAll", "Alumno")">Regresar</a>
+}
+
+
+@*Validaciones del Lado del cliente JAVASCRIPT*@
+
+
+
+@section scripts{
+
+    <script type="text/javascript">
+ 
+    document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("formulario").addEventListener('submit', validarFormulario);
+    });
+
+    function validarFormulario(event) {
+        event.preventDefault();
+        var nombre = document.getElementById('nombre').value;
+        if (nombre.length == 0) {
+            alert('Se requiere el Nombre del Alumno');
+            return;
+        }
+        var genero = document.getElementById('genero').value;
+        if (genero.length == 0) {
+            alert('Se requiere el Genero del alumno');
+            return;
+        }
+
+            var edad = document.getElementById('edad').value;
+            if (edad.length ==  0 ) {
+                    alert('Escriba correctamente su edad.');
+                    return;
+            };
+
+
+            //var BecaCultural = document.getElementById('BecaCultural').selectedIndex;
+            //var BecaDeportiva = document.getElementById('BecaDeportiva').selectedIndex;
+            //var BecaEducativa = document.getElementById('BecaEducativa').selectedIndex;
+            //if (BecaCultural == null || BecaCultural == 0 && BecaEducativa == null || BecaEducativa == 0) {
+            //    alert('Puede seleccionar la beca Educativa')
+            //    return;
+            //}
+
+            var BecaCultural = document.getElementById('BecaCultural').selectedIndex;
+            var BecaDeportiva = document.getElementById('BecaDeportiva').selectedIndex;
+            var BecaEducativa = document.getElementById('BecaEducativa').selectedIndex;
+            if (BecaCultural != null && BecaEducativa == null || BecaEducativa == 0) {
+                alert('Puede seleccionar la beca Educativa')
+                return;
+            }
+            if (BecaDeportiva != null && BecaEducativa == null || BecaEducativa == 0) {
+                alert('Puede seleccionar la beca Educativa')
+                return;
+            }
+            if (BecaCultural != null && BecaDeportiva != null) {
+                alert('No puede alquirir la beca Educativa')
+                return;
+            }
+
+
+
+        this.submit();
+    }
+
+  </script>
+  }
